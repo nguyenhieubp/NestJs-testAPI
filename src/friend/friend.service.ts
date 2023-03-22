@@ -59,12 +59,23 @@ export class FriendService {
     }
   }
 
+  async refuse(friendId: UserEntity, userId: UserEntity) {
+    return await this.blockFriend(friendId, userId);
+  }
+
   async findFriendOfUser(id: UserEntity) {
     return await this.friendRepository
       .createQueryBuilder('friends')
-      .where('userId =:id AND isBlock = false ', { id: id })
+      .where('userId =:id AND isBlock = false AND isFriend = true', { id: id })
       .leftJoinAndSelect('friends.user', 'user')
       .leftJoinAndSelect('friends.friend', 'friend')
+      .getMany();
+  }
+
+  async allAwaitFriend(id: UserEntity) {
+    return await this.friendRepository
+      .createQueryBuilder('friends')
+      .where('friendId =:id AND isBlock = false', { id: id })
       .getMany();
   }
 

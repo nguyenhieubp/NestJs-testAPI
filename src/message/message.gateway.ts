@@ -51,8 +51,6 @@ export class messageGateway implements OnModuleInit {
         userId: data.user,
       });
 
-      console.log(data.conversation, 'data conversation');
-
       client.join(data.conversation.toString());
       this.server.to(data.conversation.toString()).emit('chat message', data);
     } else {
@@ -72,7 +70,6 @@ export class messageGateway implements OnModuleInit {
       });
 
       const dataEmit = { ...data, conversation: conversation.id };
-      console.log(conversation.id, 'create');
       client.join(conversation.id);
       this.server.to(conversation.id).emit('chat message', dataEmit);
     }

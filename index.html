@@ -78,6 +78,8 @@
       var nameUser = prompt('name');
       name.textContent = `Name: ${nameUser}`;
       let conversation = '';
+
+      console.log(conversation, 'true');
       if (conversation) {
         room.textContent = `Room: ${conversation}`;
       }
@@ -85,7 +87,6 @@
       buttonRoom.addEventListener('click', () => {
         conversation = prompt('room');
       });
-      console.log(conversation);
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();

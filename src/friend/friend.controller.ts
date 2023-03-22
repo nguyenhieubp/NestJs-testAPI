@@ -9,9 +9,7 @@ import {
 } from '@nestjs/common';
 import { FriendService } from './friend.service';
 import { CreateFriendDto } from './dto/create-friend.dto';
-import { UpdateFriendDto } from './dto/update-friend.dto';
 import { UserEntity } from 'src/user/entities/user.entity';
-import { Query } from '@nestjs/common/decorators';
 
 @Controller('friend')
 export class FriendController {
@@ -31,9 +29,22 @@ export class FriendController {
     return this.friendService.confirm(friendId, userId);
   }
 
-  @Get(':id')
+  @Post('refuse')
+  async refuse(
+    @Body('friendId') friendId: UserEntity,
+    @Body('userId') userId: UserEntity,
+  ) {
+    return this.friendService.refuse(friendId, userId);
+  }
+
+  @Get('allFriend/:id')
   async findFriendOfUser(@Param('id') id: UserEntity) {
     return await this.friendService.findFriendOfUser(id);
+  }
+
+  @Get('allAwaitFriend/:id')
+  async allAwaitFriend(@Param('id') id: UserEntity) {
+    return await this.friendService.allAwaitFriend(id);
   }
 
   @Delete()
