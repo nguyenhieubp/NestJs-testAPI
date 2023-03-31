@@ -1,3 +1,4 @@
+import { UserEntity } from './entities/user.entity';
 import { AuthService } from './../auth/auth.service';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { UserDto } from './dto/user.dto';

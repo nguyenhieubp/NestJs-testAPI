@@ -1,3 +1,5 @@
+import { ConfigModule } from '@nestjs/config';
+import { MailModule } from './mail/mail.module';
 import { MessageModule } from './message/message.module';
 import { PostEntity } from './post/entities/post.entity';
 import { UserEntity } from './user/entities/user.entity';
@@ -23,13 +25,17 @@ import {
     PostModule,
     FriendModule,
     MessageModule,
+    MailModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: Number(process.env.PORT_DATABASE),
       username: 'root',
-      password: '123456789',
-      database: 'matches',
+      password: process.env.PASSWORD_DATABASE,
+      database: process.env.NAME_DATABASE,
       entities: [
         AuthEntity,
         UserEntity,

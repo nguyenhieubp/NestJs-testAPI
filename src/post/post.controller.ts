@@ -1,3 +1,4 @@
+import { UserEntity } from './../user/entities/user.entity';
 import {
   Controller,
   Get,
@@ -29,6 +30,11 @@ export class PostController {
   @Get('findById/:id')
   findPostById(@Param('id') id: string) {
     return this.postService.findPostById(id);
+  }
+
+  @Get('findByUser/:id')
+  findAllPostOfUser(@Param('id') id: UserEntity) {
+    return this.postService.findAllPostOfUser(id);
   }
 
   @Put('update/:id')

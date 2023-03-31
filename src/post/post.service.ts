@@ -1,3 +1,4 @@
+import { UserEntity } from './../user/entities/user.entity';
 import { PostEntity } from 'src/post/entities/post.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +11,8 @@ export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   async createPost(post: CreatePostDto): Promise<CreatePostDto> {
@@ -20,6 +23,7 @@ export class PostService {
     return await this.postRepository
       .createQueryBuilder('posts')
       .leftJoinAndSelect('posts.user', 'user')
+      .select(['posts', 'user.name'])
       .getMany();
   }
 
@@ -55,5 +59,16 @@ export class PostService {
     } catch (error) {
       return error;
     }
+  }
+
+  async findAllPostOfUser(id: UserEntity) {
+    const user = await this.userRepository.findOneById(id.toString());
+    const posts = await this.postRepository
+      .createQueryBuilder('posts')
+      .select('posts.title')
+      .where('userId =:id', { id: id })
+      .getMany();
+
+    return { user: user.name, posts: posts };
   }
 }
